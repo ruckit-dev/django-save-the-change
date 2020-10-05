@@ -7,7 +7,7 @@ from copy import copy
 
 from django.db import models
 from django.db.models import ManyToManyField, ForeignKey
-from django.db.models.related import ForeignObjectRel
+from django.db.models.fields.related import ForeignObjectRel
 
 
 __all__ = ('SaveTheChange', 'TrackChanges')
