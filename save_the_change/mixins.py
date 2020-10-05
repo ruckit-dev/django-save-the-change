@@ -7,7 +7,7 @@ from copy import copy
 
 from django.db import models
 from django.db.models import ManyToManyField, ForeignKey
-from django.db.models.related import RelatedObject
+from django.db.models.related import ForeignObjectRel
 
 
 __all__ = ('SaveTheChange', 'TrackChanges')
@@ -59,7 +59,7 @@ class BaseChangeTracker(object):
 			except AttributeError:
 				name_map = self._meta.init_name_map()
 			
-			if name in name_map and name_map[name][0].__class__ not in (ManyToManyField, RelatedObject):
+			if name in name_map and name_map[name][0].__class__ not in (ManyToManyField, ForeignObjectRel):
 				field = name_map[name][0]
 				
 				if isinstance(field, ForeignKey) and field.null is False:
