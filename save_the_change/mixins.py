@@ -6,7 +6,6 @@ from collections import defaultdict
 from copy import copy
 
 from django.db import models
-from django.utils import six
 from django.db.models import ManyToManyField, ForeignKey
 from django.db.models.related import RelatedObject
 
@@ -134,7 +133,7 @@ class SaveTheChange(BaseChangeTracker):
 		"""
 		
 		if self.pk and hasattr(self, '_changed_fields') and 'update_fields' not in kwargs and not kwargs.get('force_insert', False):
-			kwargs['update_fields'] = [key for key, value in six.iteritems(self._changed_fields) if hasattr(self, key)]
+			kwargs['update_fields'] = [key for key, value in self._changed_fields.items() if hasattr(self, key)]
 		
 		super(SaveTheChange, self).save(*args, **kwargs)
 
@@ -256,7 +255,7 @@ class UpdateTogetherMeta(models.base.ModelBase):
 			return new_class
 
 
-class UpdateTogetherModel(BaseChangeTracker, models.Model, six.with_metaclass(UpdateTogetherMeta)):
+class UpdateTogetherModel(BaseChangeTracker, models.Model, metaclass=UpdateTogetherMeta):
 	"""
 	A replacement for :class:`~django.db.models.Model` which allows you to
 	specify the ``Meta`` attribute ``update_together``: a
