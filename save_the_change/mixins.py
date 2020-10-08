@@ -182,11 +182,7 @@ class TrackChanges(BaseChangeTracker):
 		
 		"""
 		
-		try:
-			name_map = self._meta._name_map
-		
-		except AttributeError:
-			name_map = self._meta.init_name_map()
+		name_map = self._meta.field_map
 		
 		return dict([(field, getattr(self, field)) for field in name_map])
 	
