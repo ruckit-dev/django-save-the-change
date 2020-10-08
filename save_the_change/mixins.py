@@ -54,7 +54,7 @@ class BaseChangeTracker(object):
 		
 		if hasattr(self, '_changed_fields'):
 			
-			name_map = self._meta.fields_map
+			name_map = self._meta._forward_fields_map
 			
 			if name in name_map and name_map[name][0].__class__ not in (ManyToManyField, ForeignObjectRel):
 				field = name_map[name][0]
@@ -179,7 +179,7 @@ class TrackChanges(BaseChangeTracker):
 		
 		"""
 		
-		name_map = self._meta.fields_map
+		name_map = self._meta._forward_fields_map
 		
 		return dict([(field, getattr(self, field)) for field in name_map])
 	
