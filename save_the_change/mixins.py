@@ -56,8 +56,8 @@ class BaseChangeTracker(object):
 			
 			name_map = self._meta._forward_fields_map
 			
-			if name in name_map and name_map[name][0].__class__ not in (ManyToManyField, ForeignObjectRel):
-				field = name_map[name][0]
+			if name in name_map and name_map[name].__class__ not in (ManyToManyField, ForeignObjectRel):
+				field = name_map[name]
 				
 				if isinstance(field, ForeignKey) and field.null is False:
 					# Required ForeignKey fields raise a DoesNotExist error if
