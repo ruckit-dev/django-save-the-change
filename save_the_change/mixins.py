@@ -53,11 +53,8 @@ class BaseChangeTracker(object):
 		"""
 		
 		if hasattr(self, '_changed_fields'):
-			try:
-				name_map = self._meta._name_map
 			
-			except AttributeError:
-				name_map = self._meta.init_name_map()
+			name_map = self._meta.fields_map
 			
 			if name in name_map and name_map[name][0].__class__ not in (ManyToManyField, ForeignObjectRel):
 				field = name_map[name][0]
