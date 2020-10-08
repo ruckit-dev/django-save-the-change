@@ -179,7 +179,7 @@ class TrackChanges(BaseChangeTracker):
 		
 		"""
 		
-		name_map = self._meta.field_map
+		name_map = self._meta.fields_map
 		
 		return dict([(field, getattr(self, field)) for field in name_map])
 	
