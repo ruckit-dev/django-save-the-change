@@ -12,7 +12,6 @@ from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.db.models import ManyToManyField, ManyToOneRel
-from django.utils import six
 
 
 __all__ = ('SaveTheChange', 'TrackChanges')
@@ -21,12 +20,11 @@ __all__ = ('SaveTheChange', 'TrackChanges')
 #: A :py:class:`set` listing known immutable types.
 IMMUTABLE_TYPES = set(getattr(settings, 'STC_IMMUTABLE_TYPES', (
 	type(None), bool, float, complex, Decimal,
-	six.text_type, six.binary_type, tuple, frozenset,
+	str, bytes, tuple, frozenset,
 	date, time, datetime, timedelta, tzinfo,
-	UUID
-) + six.integer_types + six.string_types))
+	UUID, int)))
 
-INFINITELY_ITERABLE_IMMUTABLE_TYPES = set(getattr(settings, 'STC_INFINITELY_ITERABLE_IMMUTABLE_TYPES', (six.text_type, six.binary_type) + six.string_types))
+INFINITELY_ITERABLE_IMMUTABLE_TYPES = set(getattr(settings, 'STC_INFINITELY_ITERABLE_IMMUTABLE_TYPES', (str, bytes)))
 
 
 class DoesNotExist:
@@ -198,8 +196,8 @@ class SaveTheChange(BaseChangeTracker):
 		
 		if self.pk and hasattr(self, '_changed_fields') and hasattr(self, '_mutable_fields') and 'update_fields' not in kwargs and not kwargs.get('force_insert', False):
 			kwargs['update_fields'] = (
-				[key for key, value in six.iteritems(self._changed_fields)] +
-				[key for key, value in six.iteritems(self._mutable_fields) if hasattr(self, key) and getattr(self, key) != value]
+				[key for key, value in self._changed_fields.items()] +
+				[key for key, value in self._mutable_fields.items() if hasattr(self, key) and getattr(self, key) != value]
 			)
 		
 		super(SaveTheChange, self).save(*args, **kwargs)
