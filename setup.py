@@ -15,7 +15,7 @@ for line in open('requirements.txt', 'rU').readlines():
 		install_requires.append(line.replace('\n', ''))
 
 setup(
-	name="save_the_change",
+	name="django-save-the-change",
 	version=save_the_change.__version__,
 	description="Automatically save only changed model data.",
 	long_description="\n\n".join([open('README.rst', 'rU').read(), open('HISTORY.rst', 'rU').read()]),
